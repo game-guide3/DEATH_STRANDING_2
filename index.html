@@ -14,10 +14,12 @@
         .nav { position: sticky; top: 0; background: rgba(10,12,18,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 16px 0; z-index: 100; }
         .nav-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
         .logo { font-size: 1.3rem; font-weight: 800; background: linear-gradient(135deg, #FFF, #C8A55A); background-clip: text; -webkit-background-clip: text; color: transparent; }
-        .nav-links { display: flex; gap: 12px; }
+        .nav-links { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
         .nav-btn { background: transparent; border: 1px solid rgba(255,255,255,0.1); padding: 8px 20px; border-radius: 40px; color: #A3A19C; text-decoration: none; transition: 0.2s; font-weight: 500; cursor: pointer; }
         .nav-btn:hover { background: #C8A55A; color: #0A0C12; border-color: #C8A55A; }
         .pro-badge { background: linear-gradient(135deg, #C8A55A, #E6C474); color: #0A0C12; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; margin-left: 10px; }
+        .lang-toggle { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.1); border-radius: 40px; padding: 6px 14px; font-size: 0.8rem; cursor: pointer; color: #A3A19C; transition: 0.2s; }
+        .lang-toggle:hover { border-color: #C8A55A; color: #C8A55A; }
         
         .hero { text-align: center; margin: 60px 0 40px; }
         .hero h1 { font-size: 2.5rem; background: linear-gradient(135deg, #FFF, #C8A55A); background-clip: text; -webkit-background-clip: text; color: transparent; }
@@ -53,13 +55,12 @@
         .modal-content { background: #171C22; border-radius: 24px; max-width: 500px; width: 90%; padding: 32px; text-align: center; border: 1px solid #C8A55A; }
         .modal-content h3 { margin-bottom: 16px; }
         .modal-buttons { display: flex; gap: 16px; justify-content: center; margin: 24px 0; flex-wrap: wrap; }
-        .close-modal { background: transparent; border: 1px solid rgba(255,255,255,0.2); padding: 10px 24px; border-radius: 40px; color: #A3A19C; cursor: pointer; margin-top: 16px; }
         
         .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #C8A55A; color: #0A0C12; padding: 12px 24px; border-radius: 40px; font-weight: 600; z-index: 1001; display: none; animation: fadeInOut 3s ease; }
         @keyframes fadeInOut { 0% { opacity: 0; transform: translateX(-50%) translateY(20px); } 15% { opacity: 1; transform: translateX(-50%) translateY(0); } 85% { opacity: 1; } 100% { opacity: 0; transform: translateX(-50%) translateY(-20px); } }
         
         footer { text-align: center; padding: 32px 0; border-top: 1px solid rgba(255,255,255,0.06); margin-top: 40px; color: #6B6A66; font-size: 0.75rem; }
-        @media (max-width: 700px) { .hero h1 { font-size: 1.6rem; } .chapters-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 700px) { .hero h1 { font-size: 1.6rem; } .chapters-grid { grid-template-columns: 1fr; } .nav-links { justify-content: center; } }
     </style>
 </head>
 <body>
@@ -67,258 +68,276 @@
     <div class="container nav-inner">
         <div class="logo">DS2 · 死亡搁浅2 高级攻略站 <span class="pro-badge">PRO</span></div>
         <div class="nav-links">
-            <button class="nav-btn" onclick="scrollToChapters()">📖 章节列表</button>
-            <button class="nav-btn" onclick="scrollToPaywall()">🔓 解锁全部</button>
+            <button class="nav-btn" onclick="scrollToChapters()" id="navChaptersBtn">📖 章节列表</button>
+            <button class="nav-btn" onclick="scrollToPaywall()" id="navUnlockBtn">🔓 解锁全部</button>
+            <button class="lang-toggle" id="langToggle">🌐 English</button>
         </div>
     </div>
 </nav>
 
 <main class="container">
     <div class="hero">
-        <h1>死亡搁浅2 · 终极攻略站</h1>
-        <p>全17章完整流程 | PS5 + PC 双平台 | 不可错过成就标注 | BOSS打法 | 全收集</p>
-        <p style="font-size: 0.85rem; margin-top: 12px; color: #C8A55A;">✨ 前5章免费试读 · 第6-16章需付费解锁 ✨</p>
-        <p style="font-size: 0.75rem; margin-top: 8px; color: #6B6A66;">💡 点击章节卡片会在新标签页中打开攻略详情</p>
+        <h1 id="heroTitle">死亡搁浅2 · 终极攻略站</h1>
+        <p id="heroDesc">全17章完整流程 | PS5 + PC 双平台 | 不可错过成就标注 | BOSS打法 | 全收集</p>
+        <p id="heroHint" style="font-size: 0.85rem; margin-top: 12px; color: #C8A55A;">✨ 前5章免费试读 · 第6-16章需付费解锁 ✨</p>
+        <p id="heroTip" style="font-size: 0.75rem; margin-top: 8px; color: #6B6A66;">💡 点击章节卡片会在新标签页中打开攻略详情</p>
     </div>
     
     <div class="stats">
-        <div class="stat-card"><div class="stat-number">17</div><div class="stat-label">主线章节</div></div>
-        <div class="stat-card"><div class="stat-number">11</div><div class="stat-label">高级攻略章节</div></div>
-        <div class="stat-card"><div class="stat-number">$6.99</div><div class="stat-label">解锁全部高级内容</div></div>
+        <div class="stat-card"><div class="stat-number">17</div><div class="stat-label" id="statChapters">主线章节</div></div>
+        <div class="stat-card"><div class="stat-number">11</div><div class="stat-label" id="statPro">高级攻略章节</div></div>
+        <div class="stat-card"><div class="stat-number">$6.99</div><div class="stat-label" id="statPrice">解锁全部高级内容</div></div>
     </div>
     
-    <h2 style="margin: 20px 0 16px;">📑 全17章 · 点击卡片在新标签页查看攻略</h2>
+    <h2 style="margin: 20px 0 16px;" id="sectionTitle">📑 全17章 · 点击卡片在新标签页查看攻略</h2>
     <div class="chapters-grid" id="chaptersGrid"></div>
     
     <!-- 付费解锁区域 -->
     <div id="paywall" class="paywall-banner">
         <i class="ti ti-lock" style="font-size: 3rem; color: #C8A55A;"></i>
-        <h3>🔓 解锁完整攻略（第6-16章）</h3>
-        <p>包含全部BOSS详细打法、隐藏物品位置、全成就指南、PS5/PC平台差异提示</p>
-        <div class="price">$6.99 USD</div>
-        <p style="font-size: 0.8rem; color: #6B6A66;">一次性付费，永久访问 | 支持 PayPal / 信用卡</p>
+        <h3 id="paywallTitle">🔓 解锁完整攻略（第6-16章）</h3>
+        <p id="paywallDesc">包含全部BOSS详细打法、隐藏物品位置、全成就指南、PS5/PC平台差异提示</p>
+        <div class="price" id="paywallPrice">$6.99 USD</div>
+        <p id="paywallNote" style="font-size: 0.8rem; color: #6B6A66;">一次性付费，永久访问 | 支持 PayPal / 信用卡</p>
         <div class="donate-buttons">
-            <a href="https://paypal.me/z13042631716/6.99" target="_blank" class="btn-paypal" onclick="handlePurchase('paypal')">💛 通过 PayPal 解锁 ($6.99)</a>
-            <a href="https://ko-fi.com/z13042631716" target="_blank" class="btn-kofi" onclick="handlePurchase('kofi')">☕ 通过 Ko-fi 解锁 ($6.99)</a>
+            <a href="https://paypal.me/z13042631716/6.99" target="_blank" class="btn-paypal" id="paypalBtn" onclick="handlePurchase('paypal')">💛 通过 PayPal 解锁 ($6.99)</a>
+            <a href="https://ko-fi.com/z13042631716" target="_blank" class="btn-kofi" id="kofiBtn" onclick="handlePurchase('kofi')">☕ 通过 Ko-fi 解锁 ($6.99)</a>
         </div>
-        <p style="margin-top: 16px; font-size: 0.7rem;">支付后刷新页面，使用下方「验证购买」按钮输入交易信息</p>
-        <button onclick="showVerificationModal()" style="margin-top: 12px; background: transparent; border: 1px solid #C8A55A; padding: 8px 20px; border-radius: 40px; color: #C8A55A; cursor: pointer;">✅ 已有购买码？验证解锁</button>
+        <p id="verifyHint" style="margin-top: 16px; font-size: 0.7rem;">支付后刷新页面，使用下方「验证购买」按钮输入交易信息</p>
+        <button onclick="showVerificationModal()" id="verifyBtn" style="margin-top: 12px; background: transparent; border: 1px solid #C8A55A; padding: 8px 20px; border-radius: 40px; color: #C8A55A; cursor: pointer;">✅ 已有购买码？验证解锁</button>
     </div>
     
-    <footer>© DS2 高级攻略站 | 前5章免费 | 第6-16章付费解锁 | 联系: 3029331248@qq.com</footer>
+    <footer id="footer">© DS2 高级攻略站 | 前5章免费 | 第6-16章付费解锁 | 联系: 3029331248@qq.com</footer>
 </main>
 
 <!-- 验证弹窗 -->
 <div id="verifyModal" class="modal">
     <div class="modal-content">
         <i class="ti ti-key" style="font-size: 2rem; color: #C8A55A;"></i>
-        <h3>验证购买</h3>
-        <p>输入您收到的解锁码或PayPal交易号</p>
+        <h3 id="modalTitle">验证购买</h3>
+        <p id="modalDesc">输入您收到的解锁码或PayPal交易号</p>
         <input type="text" id="unlockCode" placeholder="交易号 / 解锁码" style="width: 100%; padding: 12px; margin: 16px 0; background: #111418; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; font-family: inherit;">
         <div class="modal-buttons">
-            <button onclick="verifyAndUnlock()" style="background: #C8A55A; border: none; padding: 10px 28px; border-radius: 40px; color: #0A0C12; font-weight: 600; cursor: pointer;">验证并解锁</button>
-            <button onclick="closeModal()" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); padding: 10px 28px; border-radius: 40px; color: #A3A19C; cursor: pointer;">取消</button>
+            <button onclick="verifyAndUnlock()" id="modalVerifyBtn" style="background: #C8A55A; border: none; padding: 10px 28px; border-radius: 40px; color: #0A0C12; font-weight: 600; cursor: pointer;">验证并解锁</button>
+            <button onclick="closeModal()" id="modalCancelBtn" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); padding: 10px 28px; border-radius: 40px; color: #A3A19C; cursor: pointer;">取消</button>
         </div>
-        <p style="font-size: 0.7rem; margin-top: 16px;">💡 提示：PayPal交易号可在PayPal账户的「交易记录」中找到</p>
+        <p id="modalHint" style="font-size: 0.7rem; margin-top: 16px;">💡 提示：PayPal交易号可在PayPal账户的「交易记录」中找到</p>
     </div>
 </div>
 
 <div id="toast" class="toast"></div>
 
 <script>
-    // ==================== 章节数据 ====================
-    // 前5章免费，第6-16章付费
-    const FREE_CHAPTERS_COUNT = 5;
+    // ==================== 中英文翻译库 ====================
+    let lang = 'zh';
     
-    const chapters = [
-        { num: "序章", title: "重联的开始", filename: "chapter-0", missable: false, isPro: false },
-        { num: "第一章", title: "海滩的边界", filename: "chapter-1", missable: true, isPro: false },
-        { num: "第二章", title: "时雨与死域", filename: "chapter-2", missable: false, isPro: false },
-        { num: "第三章", title: "连结者网络", filename: "chapter-3", missable: false, isPro: false },
-        { num: "第四章", title: "烈火", filename: "chapter-4", missable: true, isPro: false },
-        { num: "第五章", title: "蛹", filename: "chapter-5", missable: false, isPro: false },
-        { num: "第六章", title: "育婴舱", filename: "chapter-6", missable: false, isPro: true },
-        { num: "第七章", title: "洪水", filename: "chapter-7", missable: false, isPro: true },
-        { num: "第八章", title: "傀儡", filename: "chapter-8", missable: false, isPro: true },
-        { num: "第九章", title: "孤立之境", filename: "chapter-9", missable: true, isPro: true },
-        { num: "第十章", title: "门震", filename: "chapter-10", missable: false, isPro: true },
-        { num: "第十一章", title: "芙拉吉尔", filename: "chapter-11", missable: false, isPro: true },
-        { num: "第十二章", title: "死磕", filename: "chapter-12", missable: false, isPro: true },
-        { num: "第十三章", title: "最后的搁浅", filename: "chapter-13", missable: false, isPro: true },
-        { num: "第十四章", title: "冥滩上", filename: "chapter-14", missable: false, isPro: true },
-        { num: "第十五章", title: "明日", filename: "chapter-15", missable: false, isPro: true },
-        { num: "第十六章", title: "新纪元", filename: "chapter-16", missable: false, isPro: true }
-    ];
-    
-    // 购买验证状态
-    let isUnlocked = false;
-    
-    // 简单验证逻辑：检查本地存储
-    function checkUnlockStatus() {
-        const saved = localStorage.getItem('ds2_pro_unlocked');
-        if (saved === 'true') {
-            isUnlocked = true;
+    const translations = {
+        zh: {
+            navChapters: "📖 章节列表", navUnlock: "🔓 解锁全部", langBtn: "🌐 English",
+            heroTitle: "死亡搁浅2 · 终极攻略站",
+            heroDesc: "全17章完整流程 | PS5 + PC 双平台 | 不可错过成就标注 | BOSS打法 | 全收集",
+            heroHint: "✨ 前5章免费试读 · 第6-16章需付费解锁 ✨",
+            heroTip: "💡 点击章节卡片会在新标签页中打开攻略详情",
+            statChapters: "主线章节", statPro: "高级攻略章节", statPrice: "解锁全部高级内容",
+            sectionTitle: "📑 全17章 · 点击卡片在新标签页查看攻略",
+            paywallTitle: "🔓 解锁完整攻略（第6-16章）",
+            paywallDesc: "包含全部BOSS详细打法、隐藏物品位置、全成就指南、PS5/PC平台差异提示",
+            paywallNote: "一次性付费，永久访问 | 支持 PayPal / 信用卡",
+            paypalBtn: "💛 通过 PayPal 解锁 ($6.99)",
+            kofiBtn: "☕ 通过 Ko-fi 解锁 ($6.99)",
+            verifyHint: "支付后刷新页面，使用下方「验证购买」按钮输入交易信息",
+            verifyBtn: "✅ 已有购买码？验证解锁",
+            footer: "© DS2 高级攻略站 | 前5章免费 | 第6-16章付费解锁 | 联系: 3029331248@qq.com",
+            modalTitle: "验证购买", modalDesc: "输入您收到的解锁码或PayPal交易号",
+            modalVerifyBtn: "验证并解锁", modalCancelBtn: "取消",
+            modalHint: "💡 提示：PayPal交易号可在PayPal账户的「交易记录」中找到",
+            locked: "🔒 高级攻略", unlocked: "✨ 已解锁", free: "📖 免费查看",
+            unlockSuccess: "🎉 解锁成功！现在可以查看全部章节攻略了！",
+            needUnlock: "🔒 请先解锁高级攻略（第6-16章）",
+            invalidCode: "❌ 无效的交易号，请检查后重试",
+            enterCode: "请输入交易号或解锁码",
+            purchaseHint: "支付完成后，请点击「验证购买」按钮输入交易号"
+        },
+        en: {
+            navChapters: "📖 Chapters", navUnlock: "🔓 Unlock All", langBtn: "中文",
+            heroTitle: "Death Stranding 2 · Ultimate Guide",
+            heroDesc: "Full 17 Chapters | PS5 + PC | Missable Trophies | Boss Strategies | 100% Collectibles",
+            heroHint: "✨ First 5 chapters free · Chapters 6-16 require payment ✨",
+            heroTip: "💡 Click on chapter cards to open guide in new tab",
+            statChapters: "Main Chapters", statPro: "Pro Chapters", statPrice: "Unlock All Pro Content",
+            sectionTitle: "📑 All 17 Chapters · Click to open in new tab",
+            paywallTitle: "🔓 Unlock Full Guide (Chapters 6-16)",
+            paywallDesc: "Includes all boss strategies, hidden item locations, achievement guide, PS5/PC platform tips",
+            paywallNote: "One-time payment, permanent access | PayPal / Credit Card",
+            paypalBtn: "💛 Unlock via PayPal ($6.99)",
+            kofiBtn: "☕ Unlock via Ko-fi ($6.99)",
+            verifyHint: "After payment, click 'Verify Purchase' and enter transaction ID",
+            verifyBtn: "✅ Have a code? Verify",
+            footer: "© DS2 Pro Guide | First 5 free | Chapters 6-16 paid | Contact: 3029331248@qq.com",
+            modalTitle: "Verify Purchase", modalDesc: "Enter your unlock code or PayPal transaction ID",
+            modalVerifyBtn: "Verify & Unlock", modalCancelBtn: "Cancel",
+            modalHint: "💡 Tip: Find transaction ID in your PayPal account history",
+            locked: "🔒 Pro Guide", unlocked: "✨ Unlocked", free: "📖 Free",
+            unlockSuccess: "🎉 Unlocked! You can now access all chapters!",
+            needUnlock: "🔒 Please unlock Pro Guide first (Chapters 6-16)",
+            invalidCode: "❌ Invalid code, please check and try again",
+            enterCode: "Please enter transaction ID or unlock code",
+            purchaseHint: "After payment, click 'Verify Purchase' and enter your transaction ID"
         }
-        // 也可以设置一个演示码，方便测试
-        const demoCode = localStorage.getItem('ds2_demo_unlock');
-        if (demoCode === 'DEMO2024') {
-            isUnlocked = true;
-            localStorage.setItem('ds2_pro_unlocked', 'true');
-        }
+    };
+    
+    function t(key) { return translations[lang][key] || translations.zh[key]; }
+    
+    function applyUILang() {
+        document.getElementById("navChaptersBtn").innerHTML = t("navChapters");
+        document.getElementById("navUnlockBtn").innerHTML = t("navUnlock");
+        document.getElementById("langToggle").innerHTML = t("langBtn");
+        document.getElementById("heroTitle").innerHTML = t("heroTitle");
+        document.getElementById("heroDesc").innerHTML = t("heroDesc");
+        document.getElementById("heroHint").innerHTML = t("heroHint");
+        document.getElementById("heroTip").innerHTML = t("heroTip");
+        document.getElementById("statChapters").innerHTML = t("statChapters");
+        document.getElementById("statPro").innerHTML = t("statPro");
+        document.getElementById("statPrice").innerHTML = t("statPrice");
+        document.getElementById("sectionTitle").innerHTML = t("sectionTitle");
+        document.getElementById("paywallTitle").innerHTML = t("paywallTitle");
+        document.getElementById("paywallDesc").innerHTML = t("paywallDesc");
+        document.getElementById("paywallNote").innerHTML = t("paywallNote");
+        document.getElementById("paypalBtn").innerHTML = t("paypalBtn");
+        document.getElementById("kofiBtn").innerHTML = t("kofiBtn");
+        document.getElementById("verifyHint").innerHTML = t("verifyHint");
+        document.getElementById("verifyBtn").innerHTML = t("verifyBtn");
+        document.getElementById("footer").innerHTML = t("footer");
+        document.getElementById("modalTitle").innerHTML = t("modalTitle");
+        document.getElementById("modalDesc").innerHTML = t("modalDesc");
+        document.getElementById("modalVerifyBtn").innerHTML = t("modalVerifyBtn");
+        document.getElementById("modalCancelBtn").innerHTML = t("modalCancelBtn");
+        document.getElementById("modalHint").innerHTML = t("modalHint");
         renderChaptersGrid();
     }
     
-    // 解锁高级内容
+    function toggleLang() {
+        lang = lang === 'zh' ? 'en' : 'zh';
+        applyUILang();
+    }
+    
+    // ==================== 章节数据 ====================
+    const chapters = [
+        { num: "序章", numEn: "Prologue", title: "重联的开始", titleEn: "The Reconnection", filename: "chapter-0", missable: false, isPro: false },
+        { num: "第一章", numEn: "Ch.1", title: "海滩的边界", titleEn: "Edge of the Beach", filename: "chapter-1", missable: true, isPro: false },
+        { num: "第二章", numEn: "Ch.2", title: "时雨与死域", titleEn: "Timefall & Void", filename: "chapter-2", missable: false, isPro: false },
+        { num: "第三章", numEn: "Ch.3", title: "连结者网络", titleEn: "Porter Network", filename: "chapter-3", missable: false, isPro: false },
+        { num: "第四章", numEn: "Ch.4", title: "烈火", titleEn: "Conflagration", filename: "chapter-4", missable: true, isPro: false },
+        { num: "第五章", numEn: "Ch.5", title: "蛹", titleEn: "Chrysalis", filename: "chapter-5", missable: false, isPro: false },
+        { num: "第六章", numEn: "Ch.6", title: "育婴舱", titleEn: "Pod", filename: "chapter-6", missable: false, isPro: true },
+        { num: "第七章", numEn: "Ch.7", title: "洪水", titleEn: "Deluge", filename: "chapter-7", missable: false, isPro: true },
+        { num: "第八章", numEn: "Ch.8", title: "傀儡", titleEn: "Puppets", filename: "chapter-8", missable: false, isPro: true },
+        { num: "第九章", numEn: "Ch.9", title: "孤立之境", titleEn: "Isolation", filename: "chapter-9", missable: true, isPro: true },
+        { num: "第十章", numEn: "Ch.10", title: "门震", titleEn: "Quake", filename: "chapter-10", missable: false, isPro: true },
+        { num: "第十一章", numEn: "Ch.11", title: "芙拉吉尔", titleEn: "Fragile", filename: "chapter-11", missable: false, isPro: true },
+        { num: "第十二章", numEn: "Ch.12", title: "死磕", titleEn: "Die Hard", filename: "chapter-12", missable: false, isPro: true },
+        { num: "第十三章", numEn: "Ch.13", title: "最后的搁浅", titleEn: "Last Stranding", filename: "chapter-13", missable: false, isPro: true },
+        { num: "第十四章", numEn: "Ch.14", title: "冥滩上", titleEn: "On the Beach", filename: "chapter-14", missable: false, isPro: true },
+        { num: "第十五章", numEn: "Ch.15", title: "明日", titleEn: "Tomorrow", filename: "chapter-15", missable: false, isPro: true },
+        { num: "第十六章", numEn: "Ch.16", title: "新纪元", titleEn: "New Era", filename: "chapter-16", missable: false, isPro: true }
+    ];
+    
+    let isUnlocked = false;
+    
+    function checkUnlockStatus() {
+        const saved = localStorage.getItem('ds2_pro_unlocked');
+        if (saved === 'true') isUnlocked = true;
+        renderChaptersGrid();
+    }
+    
     function unlockProContent() {
         isUnlocked = true;
         localStorage.setItem('ds2_pro_unlocked', 'true');
         renderChaptersGrid();
-        showToast('🎉 解锁成功！现在可以查看全部章节攻略了！');
-        setTimeout(() => {
-            const modal = document.getElementById('verifyModal');
-            if (modal) modal.classList.remove('active');
-        }, 500);
+        showToast(t('unlockSuccess'));
+        setTimeout(() => { const modal = document.getElementById('verifyModal'); if(modal) modal.classList.remove('active'); }, 500);
     }
     
-    // 验证购买（简化版：接收任意交易号或演示码）
     function verifyAndUnlock() {
         const code = document.getElementById('unlockCode')?.value.trim();
-        if (!code) {
-            showToast('请输入交易号或解锁码');
-            return;
-        }
-        
-        // 简单验证逻辑：可以设置一个管理员码，或者任意非空字符串（演示用）
+        if (!code) { showToast(t('enterCode')); return; }
         if (code.length > 3) {
             unlockProContent();
             localStorage.setItem('ds2_purchase_record', code);
-            showToast('✅ 验证成功！高级章节已解锁');
+            showToast('✅ ' + t('unlockSuccess'));
         } else {
-            showToast('❌ 无效的交易号，请检查后重试');
+            showToast(t('invalidCode'));
         }
     }
     
-    function showVerificationModal() {
-        const modal = document.getElementById('verifyModal');
-        if (modal) modal.classList.add('active');
-    }
-    
-    function closeModal() {
-        const modal = document.getElementById('verifyModal');
-        if (modal) modal.classList.remove('active');
-    }
-    
+    function showVerificationModal() { document.getElementById('verifyModal').classList.add('active'); }
+    function closeModal() { document.getElementById('verifyModal').classList.remove('active'); }
     function showToast(message) {
         const toast = document.getElementById('toast');
         toast.textContent = message;
         toast.style.display = 'block';
-        setTimeout(() => {
-            toast.style.display = 'none';
-        }, 3000);
+        setTimeout(() => { toast.style.display = 'none'; }, 3000);
     }
     
-    // 处理购买点击（记录意图，实际跳转由链接完成）
     function handlePurchase(method) {
-        console.log(`Purchase initiated via ${method}`);
-        setTimeout(() => {
-            showToast('支付完成后，请点击「验证购买」按钮输入交易号');
-        }, 1000);
+        console.log(`Purchase via ${method}`);
+        setTimeout(() => { showToast(t('purchaseHint')); }, 1000);
         return true;
     }
     
-    // 【核心修改】点击章节时，在新标签页中打开
     function onChapterClick(chapter) {
         if (!chapter.isPro || isUnlocked) {
-            // 免费章节或已解锁：在新标签页打开详情页
-            const url = `${chapter.filename}.html`;
-            window.open(url, '_blank');
+            window.open(`${chapter.filename}.html`, '_blank');
         } else {
-            // 付费章节未解锁：显示提示并滚动到付费区域
-            showToast('🔒 请先解锁高级攻略（第6-16章）');
+            showToast(t('needUnlock'));
             const paywall = document.getElementById('paywall');
-            if (paywall) {
-                paywall.scrollIntoView({ behavior: 'smooth' });
-                paywall.style.transition = '0.3s';
-                paywall.style.borderColor = '#C8A55A';
-                setTimeout(() => {
-                    paywall.style.borderColor = 'rgba(200,165,90,0.3)';
-                }, 1500);
-            }
+            if(paywall) paywall.scrollIntoView({ behavior: 'smooth' });
         }
     }
     
-    // 渲染章节网格
     function renderChaptersGrid() {
         const grid = document.getElementById('chaptersGrid');
         if (!grid) return;
         
+        const displayNum = (ch) => lang === 'zh' ? ch.num : ch.numEn;
+        const displayTitle = (ch) => lang === 'zh' ? ch.title : ch.titleEn;
+        
         grid.innerHTML = chapters.map(ch => {
             const isLocked = ch.isPro && !isUnlocked;
             const lockHtml = isLocked ? '<div class="lock-icon"><i class="ti ti-lock"></i></div>' : (ch.isPro ? '<div class="pro-tag">PRO</div>' : '');
-            const missableHtml = ch.missable ? '<div class="missable-badge">⚠️ 含不可错过成就</div>' : '';
+            const missableHtml = ch.missable ? '<div class="missable-badge">⚠️ ' + (lang === 'zh' ? '含不可错过成就' : 'Missable') + '</div>' : '';
             const lockedClass = isLocked ? 'locked' : '';
-            const statusText = ch.isPro && !isLocked ? '✨ 已解锁' : (ch.isPro ? '🔒 高级攻略' : '📖 免费查看');
+            let statusText = '';
+            if (ch.isPro && !isLocked) statusText = t('unlocked');
+            else if (ch.isPro) statusText = t('locked');
+            else statusText = t('free');
             
-            // 使用 data 属性存储章节数据，避免 JSON 注入问题
             return `
                 <div class="chapter-card ${lockedClass}" data-chapter='${JSON.stringify(ch).replace(/'/g, "&#39;")}' onclick="onChapterClickFromElement(this)">
                     ${lockHtml}
-                    <div class="chapter-num">${ch.num}</div>
-                    <div class="chapter-title">${ch.title}</div>
+                    <div class="chapter-num">${displayNum(ch)}</div>
+                    <div class="chapter-title">${displayTitle(ch)}</div>
                     ${missableHtml}
-                    <div style="font-size: 0.7rem; color: #6B6A66; margin-top: 12px;">
-                        ${statusText}
-                    </div>
+                    <div style="font-size: 0.7rem; color: #6B6A66; margin-top: 12px;">${statusText}</div>
                 </div>
             `;
         }).join('');
     }
     
-    // 从 DOM 元素获取章节数据并处理点击
     function onChapterClickFromElement(element) {
         const chapterDataStr = element.getAttribute('data-chapter');
         if (chapterDataStr) {
-            try {
-                const chapter = JSON.parse(chapterDataStr);
-                onChapterClick(chapter);
-            } catch(e) {
-                console.error('解析章节数据失败', e);
-            }
+            try { onChapterClick(JSON.parse(chapterDataStr)); } catch(e) { console.error(e); }
         }
     }
     
-    // 滚动到章节区域
-    function scrollToChapters() {
-        const grid = document.getElementById('chaptersGrid');
-        if (grid) {
-            grid.scrollIntoView({ behavior: 'smooth' });
-        }
-    }
+    function scrollToChapters() { document.getElementById('chaptersGrid')?.scrollIntoView({ behavior: 'smooth' }); }
+    function scrollToPaywall() { document.getElementById('paywall')?.scrollIntoView({ behavior: 'smooth' }); }
     
-    // 滚动到付费区域
-    function scrollToPaywall() {
-        const paywall = document.getElementById('paywall');
-        if (paywall) {
-            paywall.scrollIntoView({ behavior: 'smooth' });
-        }
-    }
+    document.addEventListener('click', function(e) { if (e.target === document.getElementById('verifyModal')) closeModal(); });
     
-    // 点击模态框外部关闭
-    document.addEventListener('click', function(e) {
-        const modal = document.getElementById('verifyModal');
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
-    
-    // 初始化
+    document.getElementById("langToggle").addEventListener("click", toggleLang);
     checkUnlockStatus();
-    
-    // 提示用户所有章节页面已就绪
-    console.log('攻略站已加载。点击章节卡片会在新标签页中打开攻略详情。');
 </script>
-
-<!-- 生成所有章节详情页的提示 -->
-<!-- 注意：需要配合生成的 chapter-0.html 到 chapter-16.html 文件使用 -->
 </body>
 </html>
