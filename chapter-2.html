@@ -13,21 +13,24 @@
         .nav { background: rgba(10,12,18,0.95); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 16px 0; }
         .nav-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
         .logo { font-size: 1.2rem; font-weight: 700; background: linear-gradient(135deg, #FFF, #C8A55A); background-clip: text; -webkit-background-clip: text; color: transparent; }
+        .lang-toggle { background: #1A1C22; border: 1px solid rgba(255,255,255,0.1); border-radius: 40px; padding: 6px 14px; font-size: 0.8rem; cursor: pointer; color: #A3A19C; transition: 0.2s; }
+        .lang-toggle:hover { border-color: #C8A55A; color: #C8A55A; }
         .back-link { color: #A3A19C; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
         .back-link:hover { color: #C8A55A; }
         .chapter-header { margin: 40px 0 24px; }
         .chapter-badge { background: #C8A55A20; color: #C8A55A; padding: 4px 12px; border-radius: 40px; font-size: 0.8rem; display: inline-block; }
         .missable-badge { background: rgba(227,93,74,0.2); color: #E35D4A; padding: 4px 12px; border-radius: 40px; font-size: 0.8rem; display: inline-block; margin-left: 10px; }
+        .pro-badge { background: linear-gradient(135deg, #C8A55A, #B8962E); color: #0A0C12; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; margin-left: 10px; }
         h1 { font-size: 2rem; margin: 16px 0 8px; }
         .chapter-desc { color: #A3A19C; margin-bottom: 24px; }
         .step { padding-left: 20px; border-left: 2px solid #C8A55A; margin: 16px 0; color: #A3A19C; }
-        .items-box, .boss-box, .hidden-box, .achievement-box, .platform-box { background: #111418; padding: 16px 20px; border-radius: 12px; margin: 20px 0; }
+        .items-box, .boss-box, .hidden-box, .achievement-box, .platform-box, .warning-box { background: #111418; padding: 16px 20px; border-radius: 12px; margin: 20px 0; }
         .items-box { border-left: 3px solid #47B5A5; }
         .boss-box { border-left: 3px solid #E35D4A; }
         .hidden-box { border-left: 3px solid #C8A55A; }
         .achievement-box { border-left: 3px solid #D4AF37; }
         .platform-box { border-left: 3px solid #4A82E0; background: rgba(74,130,224,0.05); }
-        .warning-box { background: rgba(227,93,74,0.1); padding: 16px 20px; border-radius: 12px; margin: 20px 0; border-left: 3px solid #E35D4A; }
+        .warning-box { background: rgba(227,93,74,0.1); border-left: 3px solid #E35D4A; }
         .donate-card { background: linear-gradient(135deg, #1A1F2A, #111418); border-radius: 20px; padding: 24px; text-align: center; margin: 48px 0; }
         .donate-buttons { display: flex; gap: 16px; justify-content: center; margin: 16px 0; flex-wrap: wrap; }
         .btn-paypal { background: #0070BA; padding: 10px 24px; border-radius: 40px; color: white; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
@@ -40,46 +43,72 @@
 <nav class="nav">
     <div class="container nav-inner">
         <div class="logo">DS2 · 死亡搁浅2 攻略站</div>
-        <a href="index.html" class="back-link"><i class="ti ti-arrow-left"></i> 返回目录</a>
+        <div style="display: flex; gap: 16px; align-items: center;">
+            <a href="index.html" class="back-link"><i class="ti ti-arrow-left"></i> <span id="backText">返回目录</span></a>
+            <button class="lang-toggle" id="langToggle">🌐 English</button>
+        </div>
     </div>
 </nav>
 
 <main class="container">
     <div class="chapter-header">
         <div>
-            <span class="chapter-badge">第二章</span>
+            <span class="chapter-badge" id="chapterNum">第二章</span>
+            
             
         </div>
-        <h1>时雨与死域</h1>
-        <p class="chapter-desc">BT教学 + 时雨区域穿越 + 悬浮机解锁</p>
+        <h1><span id="chapterTitle">时雨与死域</span></h1>
+        <p class="chapter-desc" id="chapterDesc">BT教学 + 时雨区域穿越 + 悬浮机解锁</p>
     </div>
     
     <div>
-        <strong style="color: #C8A55A;">📋 详细流程</strong>
-        <div class="step">1. 学习时雨机制：暴露在时雨中会加速货物老化和损坏</div>
+        <strong style="color: #C8A55A;" id="stepsLabel">📋 详细流程</strong>
+        <div id="stepsContainer">
+            <div data-lang-zh>        <div class="step">1. 学习时雨机制：暴露在时雨中会加速货物老化和损坏</div>
         <div class="step">2. 使用便携雨棚或寻找天然掩体（岩石/废墟）规避时雨</div>
         <div class="step">3. 首次大规模BT战斗：用血液手雷清除区域，建议保持移动</div>
         <div class="step">4. 穿越时雨废墟，沿途收集3个记忆芯片</div>
         <div class="step">5. 遭遇精英BT：使用血液手雷+普通手雷组合攻击</div>
         <div class="step">6. 抵达西部中转站，与工程师对话，解锁「悬浮机」</div>
-        <div class="step">7. 学习悬浮机使用方法：可同时运送最多4个大件货物</div>
+        <div class="step">7. 学习悬浮机使用方法：可同时运送最多4个大件货物</div></div>
+            <div data-lang-en style="display:none;">        <div class="step">1. Learn timefall mechanics: exposure accelerates cargo aging and damage</div>
+        <div class="step">2. Use portable shelters or natural cover (rocks/ruins) to avoid timefall</div>
+        <div class="step">3. First large-scale BT battle: Use hemogrenades to clear area, keep moving</div>
+        <div class="step">4. Cross timefall ruins, collect 3 memory chips along the way</div>
+        <div class="step">5. Encounter elite BT: Use hemogrenade + regular grenade combo</div>
+        <div class="step">6. Arrive at West Depot, talk to engineer, unlock 'Floating Carrier'</div>
+        <div class="step">7. Learn Floating Carrier usage: Can transport up to 4 large cargo items</div></div>
+        </div>
     </div>
     
-    <div class="items-box">
+    <div class="items-box" data-lang-zh>
         <strong><i class="ti ti-package"></i> 可获得物品：</strong>
         <ul style="margin: 8px 0 0 20px; color: #A3A19C;">
-            <li>悬浮机（Lv.1） - 西部中转站解锁</li>
-            <li>时雨防护罩（临时） - 废墟中拾取</li>
-            <li>记忆芯片#04 - 废墟东侧建筑二层</li>
-            <li>记忆芯片#05 - 中部废弃卡车底盘下</li>
-            <li>记忆芯片#06 - 西侧山洞内</li>
-            <li>高级修复喷雾蓝图 - 击败精英BT奖励</li>
-            <li>开罗尔晶体x8 - BT掉落</li>
+            <li>悬浮机（Lv.1）</li>
+            <li>时雨防护罩（临时）</li>
+            <li>记忆芯片#04</li>
+            <li>记忆芯片#05</li>
+            <li>记忆芯片#06</li>
+            <li>高级修复喷雾蓝图</li>
+            <li>开罗尔晶体x8</li>
         </ul>
     </div>
     
-    <div class="boss-box">
-        <strong><i class="ti ti-sword"></i> ⚔️ BOSS战攻略 · 第二章BOSS：精英BT</strong>
+    <div class="items-box" data-lang-en style="display:none;">
+        <strong><i class="ti ti-package"></i> Items:</strong>
+        <ul style="margin: 8px 0 0 20px; color: #A3A19C;">
+            <li>Floating Carrier (Lv.1)</li>
+            <li>Timefall Shield (Temporary)</li>
+            <li>Memory Chip #04</li>
+            <li>Memory Chip #05</li>
+            <li>Memory Chip #06</li>
+            <li>Advanced Repair Spray BP</li>
+            <li>Chiral Crystal x8</li>
+        </ul>
+    </div>
+    
+    <div class="boss-box" data-lang-zh>
+        <strong><i class="ti ti-sword"></i> ⚔️ BOSS战攻略 · 精英BT</strong>
         <div style="margin-top: 12px;">
             <div style="color: #C8A55A; margin-bottom: 8px;">📊 阶段分解：</div>
             <ul style="margin-left: 20px; color: #A3A19C;">
@@ -91,14 +120,34 @@
         </div>
     </div>
     
-    <div class="hidden-box">
+    <div class="boss-box" data-lang-en style="display:none;">
+        <strong><i class="ti ti-sword"></i> ⚔️ Boss Guide · Elite BT</strong>
+        <div style="margin-top: 12px;">
+            <div style="color: #C8A55A; margin-bottom: 8px;">📊 Phases:</div>
+            <ul style="margin-left: 20px; color: #A3A19C;">
+                <li>Phase 1 - Regular combat: Mainly ranged attacks, use cover to dodge black liquid spray</li>
+                <li>Phase 2 - Enraged state: Increased movement speed, widened melee attack range</li>
+            </ul>
+            <div style="margin-top: 10px;"><span style="color: #C8A55A;">🎒 Recommended Gear:</span> Hemogrenade x8, Regular Grenade x4, Assault Rifle</div>
+            <div style="margin-top: 6px;"><span style="color: #C8A55A;">💡 Special Mechanics:</span> Elite BT drops Chiral Crystals when hit by hemogrenades, can pick up to replenish ammo. Clear small BTs first then focus on elite.</div>
+        </div>
+    </div>
+    
+    <div class="hidden-box" data-lang-zh>
         <strong><i class="ti ti-eye-off"></i> 🔍 隐藏物品/彩蛋：</strong>
         <ul style="margin: 8px 0 0 20px; color: #A3A19C;">
             <li>隐藏道具「工程师的笔记」：西部中转站后方集装箱内，可解锁悬浮机Lv.2蓝图</li>
         </ul>
     </div>
     
-    <div class="achievement-box">
+    <div class="hidden-box" data-lang-en style="display:none;">
+        <strong><i class="ti ti-eye-off"></i> 🔍 Hidden Items/Easter Eggs:</strong>
+        <ul style="margin: 8px 0 0 20px; color: #A3A19C;">
+            <li>Hidden item 'Engineer's Notes': In container behind West Depot, unlocks Floating Carrier Lv.2 BP</li>
+        </ul>
+    </div>
+    
+    <div class="achievement-box" data-lang-zh>
         <strong><i class="ti ti-trophy"></i> 🏆 本章成就/奖杯：</strong>
         <ul style="margin: 8px 0 0 20px; color: #A3A19C;">
             <li>🏆 时雨幸存者（铜奖） - 首次在时雨区域内完成配送而不损坏货物</li>
@@ -106,27 +155,76 @@
         </ul>
     </div>
     
-    <div class="platform-box">
+    <div class="achievement-box" data-lang-en style="display:none;">
+        <strong><i class="ti ti-trophy"></i> 🏆 Trophies/Achievements:</strong>
+        <ul style="margin: 8px 0 0 20px; color: #A3A19C;">
+            <li>🏆 Timefall Survivor (Bronze) - Complete delivery in timefall zone without cargo damage</li>
+            <li>🏆 BT Hunter (Bronze) - Defeat 10 BTs in Chapter 2</li>
+        </ul>
+    </div>
+    
+    <div class="platform-box" data-lang-zh>
         <strong><i class="ti ti-device-desktop"></i> 🎮 平台差异提示：</strong><br>
         <span style="color: #A3A19C; font-size: 0.85rem;">PS5: 自适应扳机在时雨中会有阻力反馈；PC: 开启光线追踪后时雨效果更真实。</span>
     </div>
     
-    <div class="warning-box">
-        <strong><i class="ti ti-alert-circle"></i> ⚠️ 警告</strong><br>
-        时雨区内不建议长时间战斗，优先跑图。血液手雷可以暂时清除小范围时雨。悬浮机在平地非常好用，但山地效率下降。
+    <div class="platform-box" data-lang-en style="display:none;">
+        <strong><i class="ti ti-device-desktop"></i> 🎮 Platform Differences:</strong><br>
+        <span style="color: #A3A19C; font-size: 0.85rem;">PS5: Adaptive trigger resistance feedback in timefall; PC: Ray tracing enhances timefall effects.</span>
     </div>
+    <div class="warning-box" data-lang-zh><strong><i class="ti ti-alert-circle"></i> ⚠️ 警告</strong><br>时雨区内不建议长时间战斗，优先跑图。血液手雷可以暂时清除小范围时雨。悬浮机在平地非常好用，但山地效率下降。</div>
+    <div class="warning-box" data-lang-en style="display:none;"><strong><i class="ti ti-alert-circle"></i> ⚠️ Warning</strong><br>Avoid long fights in timefall zones, prioritize traversal. Hemogrenades temporarily clear small timefall areas. Floating Carrier excellent on flat terrain, less effective in mountains.</div>
+    
     
     <div class="donate-card">
         <i class="ti ti-coffee" style="font-size: 1.6rem; color: #C8A55A;"></i>
-        <h3>Buy me a coffee ☕</h3>
-        <p>如果攻略对你有帮助，欢迎请作者喝杯咖啡，支持持续更新</p>
+        <h3 id="donateTitle">Buy me a coffee ☕</h3>
+        <p id="donateDesc">如果攻略对你有帮助，欢迎请作者喝杯咖啡，支持持续更新</p>
         <div class="donate-buttons">
             <a href="https://paypal.me/z13042631716" target="_blank" class="btn-paypal">💛 PayPal 支持</a>
             <a href="https://ko-fi.com/z13042631716" target="_blank" class="btn-kofi">☕ Ko-fi 支持</a>
         </div>
     </div>
     
-    <footer>© DS2 完整攻略站 | 第二章完 | <a href="chapter-3.html" style="color: #C8A55A;">→ 第二章下一章：继续攻略</a></footer>
+    <footer>© DS2 完整攻略站 | 第二章完 | <a href="chapter-3.html" id="nextChapterLink" style="color: #C8A55A;">下一章 →</a></footer>
 </main>
+
+<script>
+    let lang = 'zh';
+    const translations = {
+        zh: { back: "返回目录", steps: "📋 详细流程", donateTitle: "Buy me a coffee ☕", donateDesc: "如果攻略对你有帮助，欢迎请作者喝杯咖啡，支持持续更新" },
+        en: { back: "Back to Index", steps: "📋 Walkthrough", donateTitle: "Buy me a coffee ☕", donateDesc: "If this guide helps you, please consider buying me a coffee" }
+    };
+    
+    function applyLang() {
+        const t = translations[lang];
+        document.getElementById('backText').innerText = t.back;
+        document.getElementById('stepsLabel').innerText = t.steps;
+        document.getElementById('donateTitle').innerText = t.donateTitle;
+        document.getElementById('donateDesc').innerText = t.donateDesc;
+        
+        document.querySelectorAll('[data-lang-zh]').forEach(el => el.style.display = lang === 'zh' ? 'block' : 'none');
+        document.querySelectorAll('[data-lang-en]').forEach(el => el.style.display = lang === 'en' ? 'block' : 'none');
+        
+        if (lang === 'zh') {
+            document.getElementById('chapterNum').innerText = '第二章';
+            document.getElementById('chapterTitle').innerText = '时雨与死域';
+            document.getElementById('chapterDesc').innerText = 'BT教学 + 时雨区域穿越 + 悬浮机解锁';
+        } else {
+            document.getElementById('chapterNum').innerText = 'Ch.2';
+            document.getElementById('chapterTitle').innerText = 'Timefall & Void';
+            document.getElementById('chapterDesc').innerText = 'BT tutorial + Timefall crossing + Floating Carrier unlock';
+        }
+    }
+    
+    function toggleLang() {
+        lang = lang === 'zh' ? 'en' : 'zh';
+        document.getElementById('langToggle').innerHTML = lang === 'zh' ? '🌐 English' : '中文';
+        applyLang();
+    }
+    
+    document.getElementById('langToggle').addEventListener('click', toggleLang);
+    applyLang();
+</script>
 </body>
 </html>

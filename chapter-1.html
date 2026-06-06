@@ -13,21 +13,24 @@
         .nav { background: rgba(10,12,18,0.95); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 16px 0; }
         .nav-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
         .logo { font-size: 1.2rem; font-weight: 700; background: linear-gradient(135deg, #FFF, #C8A55A); background-clip: text; -webkit-background-clip: text; color: transparent; }
+        .lang-toggle { background: #1A1C22; border: 1px solid rgba(255,255,255,0.1); border-radius: 40px; padding: 6px 14px; font-size: 0.8rem; cursor: pointer; color: #A3A19C; transition: 0.2s; }
+        .lang-toggle:hover { border-color: #C8A55A; color: #C8A55A; }
         .back-link { color: #A3A19C; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
         .back-link:hover { color: #C8A55A; }
         .chapter-header { margin: 40px 0 24px; }
         .chapter-badge { background: #C8A55A20; color: #C8A55A; padding: 4px 12px; border-radius: 40px; font-size: 0.8rem; display: inline-block; }
         .missable-badge { background: rgba(227,93,74,0.2); color: #E35D4A; padding: 4px 12px; border-radius: 40px; font-size: 0.8rem; display: inline-block; margin-left: 10px; }
+        .pro-badge { background: linear-gradient(135deg, #C8A55A, #B8962E); color: #0A0C12; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; margin-left: 10px; }
         h1 { font-size: 2rem; margin: 16px 0 8px; }
         .chapter-desc { color: #A3A19C; margin-bottom: 24px; }
         .step { padding-left: 20px; border-left: 2px solid #C8A55A; margin: 16px 0; color: #A3A19C; }
-        .items-box, .boss-box, .hidden-box, .achievement-box, .platform-box { background: #111418; padding: 16px 20px; border-radius: 12px; margin: 20px 0; }
+        .items-box, .boss-box, .hidden-box, .achievement-box, .platform-box, .warning-box { background: #111418; padding: 16px 20px; border-radius: 12px; margin: 20px 0; }
         .items-box { border-left: 3px solid #47B5A5; }
         .boss-box { border-left: 3px solid #E35D4A; }
         .hidden-box { border-left: 3px solid #C8A55A; }
         .achievement-box { border-left: 3px solid #D4AF37; }
         .platform-box { border-left: 3px solid #4A82E0; background: rgba(74,130,224,0.05); }
-        .warning-box { background: rgba(227,93,74,0.1); padding: 16px 20px; border-radius: 12px; margin: 20px 0; border-left: 3px solid #E35D4A; }
+        .warning-box { background: rgba(227,93,74,0.1); border-left: 3px solid #E35D4A; }
         .donate-card { background: linear-gradient(135deg, #1A1F2A, #111418); border-radius: 20px; padding: 24px; text-align: center; margin: 48px 0; }
         .donate-buttons { display: flex; gap: 16px; justify-content: center; margin: 16px 0; flex-wrap: wrap; }
         .btn-paypal { background: #0070BA; padding: 10px 24px; border-radius: 40px; color: white; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
@@ -40,58 +43,97 @@
 <nav class="nav">
     <div class="container nav-inner">
         <div class="logo">DS2 · 死亡搁浅2 攻略站</div>
-        <a href="index.html" class="back-link"><i class="ti ti-arrow-left"></i> 返回目录</a>
+        <div style="display: flex; gap: 16px; align-items: center;">
+            <a href="index.html" class="back-link"><i class="ti ti-arrow-left"></i> <span id="backText">返回目录</span></a>
+            <button class="lang-toggle" id="langToggle">🌐 English</button>
+        </div>
     </div>
 </nav>
 
 <main class="container">
     <div class="chapter-header">
         <div>
-            <span class="chapter-badge">第一章</span>
+            <span class="chapter-badge" id="chapterNum">第一章</span>
             <span class="missable-badge">⚠️ 含不可错过成就</span>
+            
         </div>
-        <h1>海滩的边界</h1>
-        <p class="chapter-desc">首个开放区域 · 南部海岸 · 2个限时成就</p>
+        <h1><span id="chapterTitle">海滩的边界</span></h1>
+        <p class="chapter-desc" id="chapterDesc">首个开放区域 · 南部海岸 · 2个限时成就</p>
     </div>
     
     <div>
-        <strong style="color: #C8A55A;">📋 详细流程</strong>
-        <div class="step">1. 离开序章区域，进入南部海岸开放地图</div>
+        <strong style="color: #C8A55A;" id="stepsLabel">📋 详细流程</strong>
+        <div id="stepsContainer">
+            <div data-lang-zh>        <div class="step">1. 离开序章区域，进入南部海岸开放地图</div>
         <div class="step">2. 完成3个教学配送（药品/食物/工具到附近据点）</div>
         <div class="step">3. 首次遭遇MULE营地，学习潜行绕后或正面战斗</div>
         <div class="step">4. 【重要】在离开区域前，前往东南角悬崖边寻找NPC'老艾萨克'，对话两次（触发成就：搁浅者的回响）</div>
         <div class="step">5. 【重要】在BT区域西北侧的洞穴内，寻找紫色发光脐带并破坏（触发成就：海滩的第一条脐带）</div>
         <div class="step">6. 收集区域内散落的3个记忆芯片</div>
-        <div class="step">7. 最后交付主线任务道具到港口，进入新区域（此后无法返回）</div>
+        <div class="step">7. 最后交付主线任务道具到港口，进入新区域（此后无法返回）</div></div>
+            <div data-lang-en style="display:none;">        <div class="step">1. Leave prologue area, enter south coast open map</div>
+        <div class="step">2. Complete 3 tutorial deliveries (medicine/food/tools to nearby outposts)</div>
+        <div class="step">3. First MULE camp encounter, learn stealth flanking or direct combat</div>
+        <div class="step">4. [IMPORTANT] Before leaving, go to southeast cliff and talk to NPC 'Old Isaac' twice (Trophy: Echoes of the Stranded)</div>
+        <div class="step">5. [IMPORTANT] In NW cave of BT zone, find and destroy purple glowing umbilical cord (Trophy: First Umbilical of the Beach)</div>
+        <div class="step">6. Collect 3 scattered memory chips in the area</div>
+        <div class="step">7. Finally deliver main quest item to port, enter new area (cannot return after)</div></div>
+        </div>
     </div>
     
-    <div class="items-box">
+    <div class="items-box" data-lang-zh>
         <strong><i class="ti ti-package"></i> 可获得物品：</strong>
         <ul style="margin: 8px 0 0 20px; color: #A3A19C;">
-            <li>血液手雷正式配方 - 击败第一章BT后获得</li>
-            <li>攀爬柱（可重复使用） - 主线奖励</li>
-            <li>梯子（可重复使用） - 主线奖励</li>
-            <li>记忆芯片#01 - 地图东北角废墟二层</li>
-            <li>记忆芯片#02 - 西南方废弃卡车内</li>
-            <li>记忆芯片#03 - 中部洞穴深处</li>
-            <li>开罗尔晶体x5 - BT掉落</li>
+            <li>血液手雷正式配方</li>
+            <li>攀爬柱（可重复使用）</li>
+            <li>梯子（可重复使用）</li>
+            <li>记忆芯片#01</li>
+            <li>记忆芯片#02</li>
+            <li>记忆芯片#03</li>
+            <li>开罗尔晶体x5</li>
         </ul>
     </div>
     
-    <div class="boss-box">
-        <strong><i class="ti ti-sword"></i> ⚔️ BOSS战攻略 · 第一章BOSS：异形BT</strong>
+    <div class="items-box" data-lang-en style="display:none;">
+        <strong><i class="ti ti-package"></i> Items:</strong>
+        <ul style="margin: 8px 0 0 20px; color: #A3A19C;">
+            <li>Hemogrenade Formal BP</li>
+            <li>Climbing Anchor (reusable)</li>
+            <li>Ladder (reusable)</li>
+            <li>Memory Chip #01</li>
+            <li>Memory Chip #02</li>
+            <li>Memory Chip #03</li>
+            <li>Chiral Crystal x5</li>
+        </ul>
+    </div>
+    
+    <div class="boss-box" data-lang-zh>
+        <strong><i class="ti ti-sword"></i> ⚔️ BOSS战攻略 · 异形BT</strong>
         <div style="margin-top: 12px;">
             <div style="color: #C8A55A; margin-bottom: 8px;">📊 阶段分解：</div>
             <ul style="margin-left: 20px; color: #A3A19C;">
                 <li>阶段1 - 地面爬行：保持距离，用血液手雷攻击，注意躲避冲撞</li>
                 <li>阶段2 - 站立形态：攻击前摇明显，侧向闪避后反击，弱点在胸口发光处</li>
             </ul>
-            <div style="margin-top: 10px;"><span style="color: #C8A55A;">🎒 推荐装备：</span> 血液手雷x5、攀爬柱（用于躲避）、修复喷雾x2</div>
-            <div style="margin-top: 6px;"><span style="color: #C8A55A;">💡 特殊机制：</span> BOSS被血液手雷击中后会短暂硬直，此时可以绕后攻击。场景中有补给箱可以补充血液手雷。</div>
+            <div style="margin-top: 10px;"><span style="color: #C8A55A;">🎒 推荐装备：</span> 血液手雷x5、攀爬柱、修复喷雾x2</div>
+            <div style="margin-top: 6px;"><span style="color: #C8A55A;">💡 特殊机制：</span> BOSS被血液手雷击中后会短暂硬直，可以绕后攻击。场景中有补给箱可以补充血液手雷。</div>
         </div>
     </div>
     
-    <div class="hidden-box">
+    <div class="boss-box" data-lang-en style="display:none;">
+        <strong><i class="ti ti-sword"></i> ⚔️ Boss Guide · Aberrant BT</strong>
+        <div style="margin-top: 12px;">
+            <div style="color: #C8A55A; margin-bottom: 8px;">📊 Phases:</div>
+            <ul style="margin-left: 20px; color: #A3A19C;">
+                <li>Phase 1 - Ground crawling: Keep distance, use hemogrenades, dodge charges</li>
+                <li>Phase 2 - Standing form: Clear attack windup, side dodge then counter, weak point is glowing chest</li>
+            </ul>
+            <div style="margin-top: 10px;"><span style="color: #C8A55A;">🎒 Recommended Gear:</span> Hemogrenade x5, Climbing Anchor, Repair Spray x2</div>
+            <div style="margin-top: 6px;"><span style="color: #C8A55A;">💡 Special Mechanics:</span> BOSS briefly stuns when hit by hemogrenade, can attack from behind. Supply boxes in arena refill hemogrenades.</div>
+        </div>
+    </div>
+    
+    <div class="hidden-box" data-lang-zh>
         <strong><i class="ti ti-eye-off"></i> 🔍 隐藏物品/彩蛋：</strong>
         <ul style="margin: 8px 0 0 20px; color: #A3A19C;">
             <li>隐藏道具「老艾萨克的怀表」：与NPC对话两次后，在他旁边的箱子里获得</li>
@@ -99,7 +141,15 @@
         </ul>
     </div>
     
-    <div class="achievement-box">
+    <div class="hidden-box" data-lang-en style="display:none;">
+        <strong><i class="ti ti-eye-off"></i> 🔍 Hidden Items/Easter Eggs:</strong>
+        <ul style="margin: 8px 0 0 20px; color: #A3A19C;">
+            <li>Hidden item 'Old Isaac's Pocket Watch': After talking twice, find in box next to him</li>
+            <li>Hidden accessory 'Beach Shell': In deepest part of NW cave, between rocks</li>
+        </ul>
+    </div>
+    
+    <div class="achievement-box" data-lang-zh>
         <strong><i class="ti ti-trophy"></i> 🏆 本章成就/奖杯：</strong>
         <ul style="margin: 8px 0 0 20px; color: #A3A19C;">
             <li>🏆 搁浅者的回响（银杯） - 与老艾萨克对话两次（不可错过）</li>
@@ -108,27 +158,77 @@
         </ul>
     </div>
     
-    <div class="platform-box">
+    <div class="achievement-box" data-lang-en style="display:none;">
+        <strong><i class="ti ti-trophy"></i> 🏆 Trophies/Achievements:</strong>
+        <ul style="margin: 8px 0 0 20px; color: #A3A19C;">
+            <li>🏆 Echoes of the Stranded (Silver) - Talk to Old Isaac twice (Missable)</li>
+            <li>🏆 First Umbilical of the Beach (Silver) - Destroy purple umbilical cord (Missable)</li>
+            <li>🏆 Novice Porter (Bronze) - Complete all deliveries in Chapter 1</li>
+        </ul>
+    </div>
+    
+    <div class="platform-box" data-lang-zh>
         <strong><i class="ti ti-device-desktop"></i> 🎮 平台差异提示：</strong><br>
         <span style="color: #A3A19C; font-size: 0.85rem;">PS5: 推荐性能模式(60fps)，BT区域帧数更稳定；PC: 开启DLSS/FSR质量模式可大幅提升BT区域流畅度。</span>
     </div>
     
-    <div class="warning-box">
-        <strong><i class="ti ti-alert-circle"></i> ⚠️ 警告</strong><br>
-        ⚠️ 本章有两个不可回溯的成就！一旦进入港口区域，将永远无法返回完成。成就1：与悬崖边NPC对话两次；成就2：破坏洞穴内的紫色脐带。离开前请务必确认已完成。
+    <div class="platform-box" data-lang-en style="display:none;">
+        <strong><i class="ti ti-device-desktop"></i> 🎮 Platform Differences:</strong><br>
+        <span style="color: #A3A19C; font-size: 0.85rem;">PS5: Performance mode (60fps) recommended for stable BT zone frames; PC: Enable DLSS/FSR Quality mode for better BT zone performance.</span>
     </div>
+    <div class="warning-box" data-lang-zh><strong><i class="ti ti-alert-circle"></i> ⚠️ 警告</strong><br>⚠️ 两个隐藏成就必须完成，离开第一章后无法返回！成就1：与悬崖边NPC对话两次；成就2：破坏洞穴内的紫色脐带。离开前请务必确认已完成。</div>
+    <div class="warning-box" data-lang-en style="display:none;"><strong><i class="ti ti-alert-circle"></i> ⚠️ Warning</strong><br>⚠️ Both missable trophies! Cannot return after Chapter 1! Trophy 1: Talk to cliff NPC twice; Trophy 2: Destroy purple umbilical cord in cave. Confirm before leaving.</div>
+    
     
     <div class="donate-card">
         <i class="ti ti-coffee" style="font-size: 1.6rem; color: #C8A55A;"></i>
-        <h3>Buy me a coffee ☕</h3>
-        <p>如果攻略对你有帮助，欢迎请作者喝杯咖啡，支持持续更新</p>
+        <h3 id="donateTitle">Buy me a coffee ☕</h3>
+        <p id="donateDesc">如果攻略对你有帮助，欢迎请作者喝杯咖啡，支持持续更新</p>
         <div class="donate-buttons">
             <a href="https://paypal.me/z13042631716" target="_blank" class="btn-paypal">💛 PayPal 支持</a>
             <a href="https://ko-fi.com/z13042631716" target="_blank" class="btn-kofi">☕ Ko-fi 支持</a>
         </div>
     </div>
     
-    <footer>© DS2 完整攻略站 | 第一章完 | <a href="chapter-2.html" style="color: #C8A55A;">→ 第一章下一章：继续攻略</a></footer>
+    <footer>© DS2 完整攻略站 | 第一章完 | <a href="chapter-2.html" id="nextChapterLink" style="color: #C8A55A;">下一章 →</a></footer>
 </main>
+
+<script>
+    let lang = 'zh';
+    const translations = {
+        zh: { back: "返回目录", steps: "📋 详细流程", donateTitle: "Buy me a coffee ☕", donateDesc: "如果攻略对你有帮助，欢迎请作者喝杯咖啡，支持持续更新" },
+        en: { back: "Back to Index", steps: "📋 Walkthrough", donateTitle: "Buy me a coffee ☕", donateDesc: "If this guide helps you, please consider buying me a coffee" }
+    };
+    
+    function applyLang() {
+        const t = translations[lang];
+        document.getElementById('backText').innerText = t.back;
+        document.getElementById('stepsLabel').innerText = t.steps;
+        document.getElementById('donateTitle').innerText = t.donateTitle;
+        document.getElementById('donateDesc').innerText = t.donateDesc;
+        
+        document.querySelectorAll('[data-lang-zh]').forEach(el => el.style.display = lang === 'zh' ? 'block' : 'none');
+        document.querySelectorAll('[data-lang-en]').forEach(el => el.style.display = lang === 'en' ? 'block' : 'none');
+        
+        if (lang === 'zh') {
+            document.getElementById('chapterNum').innerText = '第一章';
+            document.getElementById('chapterTitle').innerText = '海滩的边界';
+            document.getElementById('chapterDesc').innerText = '首个开放区域 · 南部海岸 · 2个限时成就';
+        } else {
+            document.getElementById('chapterNum').innerText = 'Ch.1';
+            document.getElementById('chapterTitle').innerText = 'Edge of the Beach';
+            document.getElementById('chapterDesc').innerText = 'First open area · South Coast · 2 missable trophies';
+        }
+    }
+    
+    function toggleLang() {
+        lang = lang === 'zh' ? 'en' : 'zh';
+        document.getElementById('langToggle').innerHTML = lang === 'zh' ? '🌐 English' : '中文';
+        applyLang();
+    }
+    
+    document.getElementById('langToggle').addEventListener('click', toggleLang);
+    applyLang();
+</script>
 </body>
 </html>
